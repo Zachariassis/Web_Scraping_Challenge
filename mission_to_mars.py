@@ -12,7 +12,7 @@ import json
 #url_facts='https://space-facts.com/mars/'
 #url_hemi='https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 
-def hello():
+def mars_news():
     #Parse Mars News
     executable_path = {'executable_path': 'chromedriver.exe'}
     browser = Browser('chrome', **executable_path)
@@ -30,7 +30,12 @@ def hello():
     
     news=pd.DataFrame({"Title": title, "Body": news})
 
-    return news
+    browser.quit()
+
+    return news[0]
+
+
+
 
 def scrape_images():
     #Parse Space Images
@@ -43,7 +48,12 @@ def scrape_images():
     article=soup.find_all('ul', class_='articles')[0].find_all('li',class_='slide')[0]
     featured_image_url='https://www.jpl.nasa.gov'+article.find('div', class_='img').img['src']
 
+    browser.quit()
+
     return featured_image_url
+
+
+
 
 def scrape_facts():
     #Parse facts
@@ -70,6 +80,9 @@ def scrape_facts():
     text_file = open("data_table.html", "w")
     text_file.write(html_data)
     text_file.close()
+
+    browser.quit()
+
     return table_data
 
 def scrape_hemi():
@@ -92,3 +105,7 @@ def scrape_hemi():
         img_name=str.split(soup.h2.text)
         hemsisphere_url=hemsisphere_url.append(pd.DataFrame({'Title':[img_name[0]+' '+img_name[1]], 'Img_url':[img_url]}))
     hemsisphere_url=hemsisphere_url.reset_index(drop=True)
+
+    browser.quit()
+
+    return hemsisphere_url
