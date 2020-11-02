@@ -4,24 +4,15 @@ import pandas as pd
 import json
 import time
 
-#executable_path = {'executable_path': 'chromedriver.exe'}
-#browser = Browser('chrome', **executable_path)
-
-#Write out URLs
-#url_mars_news='https://mars.nasa.gov/news/'
-#url_space_images='https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
-#url_facts='https://space-facts.com/mars/'
-#url_hemi='https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-
 def mars_news():
     #Parse Mars News
     executable_path = {'executable_path': 'chromedriver.exe'}
     browser = Browser('chrome', **executable_path)
     url_mars_news='https://mars.nasa.gov/news/'
     browser.visit(url_mars_news)
+    time.sleep(5)
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
-    time.sleep(2)
     article=soup.find_all('ul', class_='item_list')[0].find_all('li',class_='slide')
 
     title=[]
@@ -34,7 +25,7 @@ def mars_news():
 
     browser.quit()
 
-    return news
+    return news.iloc[0]
 
 
 
@@ -63,25 +54,17 @@ def scrape_facts():
     browser = Browser('chrome', **executable_path)
     url_facts='https://space-facts.com/mars/'
     browser.visit(url_facts)
+    time.sleep(1)
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
 
     article=soup.table.find_all('tr')
 
-    table_data=pd.DataFrame({'Property':[],'Value':[]})
+    table_data=[]
     for i in range(len(article)):
         p=article[i].find('td', class_='column-1').text
         v=article[i].find('td', class_='column-2').text
-        table_data=table_data.append(pd.DataFrame({'Property':[p],'Value':[v]}))
-
-    table_data=table_data.reset_index(drop=True)
-
-
-    #Covert to HTML String
-    html_data=table_data.to_html()
-    text_file = open("data_table.html", "w")
-    text_file.write(html_data)
-    text_file.close()
+        table_data.append({'Property':p,'Value':v})
 
     browser.quit()
 
@@ -96,11 +79,13 @@ def scrape_hemi():
 
     for i in range(4):
         browser.visit(url_hemi)
+        time.sleep(1)
         html = browser.html
         soup = BeautifulSoup(html, 'html.parser')
         article=soup.find_all('div', class_='item')
         link=article[i].a['href']
         browser.visit('https://astrogeology.usgs.gov'+link)
+        time.sleep(2)
         html = browser.html
         soup = BeautifulSoup(html, 'html.parser')
         img_url=soup.li.a['href']

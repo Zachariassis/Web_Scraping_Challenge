@@ -17,11 +17,73 @@
       <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape new Data</a></p>
     </div>
 
-    <!-- Craigslist Listings -->
+    <!-- Mars News -->
     <div class="row" id="news">
       <div class="col-md-12">
+        <h2 class=heading>Latest Mars News</h2>
         <h4 class="heading">{{news.Title}}</h4>
         <small>{{news.Body}}</small>
+      </div>
+    </div>
+
+    <!-- Mars Featured Image and Facts-->
+    <div class="row" id="image">
+      <div class="col-md-8">
+        <h2 class="heading">Mars Featured Image</h2>
+        <img src="{{news.Featured}}">
+      </div>
+      <div class="col-md-4">
+        <h3 class="heading">Mars Facts</h3>
+        <table class="dataframe">
+          <tbody>
+            <!--{% if facts[0] is defined %}-->
+              {% for f in facts %}
+                <tr>
+                  <td>{{ f['Property'] }}</td>
+                  <td>{{ f['Value'] }}</td>
+                </tr>
+              {% endfor %}
+            <!--{% endif %}-->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <br><br>
+    <!-- Mars Hemispheres -->
+
+    <div class="row" id="Hemisphere_Title">
+      <div class="col-md-12" style="text-align: center;">
+        <h2 class='heading'>Martian Hemispheres</h2>
+      </div>
+    </div>
+
+    <div class="row" id="Hemispheres1">
+      <div class="col-md-6" style="text-align:center;">
+        {% if news.HemiTitle is defined %}
+          <h2 class="heading">{{ news.HemiTitle[0] }}</h2>
+          <img src="{{ news.HemiURL[0] }}" height="500" width="500">
+        {% endif %}
+      </div>
+      <div class="col-md-6" style="text-align:center;">
+        {% if news.HemiTitle is defined %}
+          <h2 class="heading">{{ news.HemiTitle[1] }}</h2>
+          <img src="{{ news.HemiURL[1] }}" height="500" width="500">
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row" id="Hemispheres2">
+      <div class="col-md-6" style="text-align:center;">
+        {% if news.HemiTitle is defined %}
+          <h2 class="heading">{{ news.HemiTitle[2] }}</h2>
+          <img src="{{ news.HemiURL[2] }}" height="500" width="500">
+        {% endif %}
+      </div>
+      <div class="col-md-6" style="text-align:center;">
+        {% if news.HemiTitle is defined %}
+          <h2 class="heading">{{ news.HemiTitle[3] }}</h2>
+          <img src="{{ news.HemiURL[3] }}" height="500" width="500">
+        {% endif %}
       </div>
     </div>
 
